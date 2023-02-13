@@ -1,0 +1,39 @@
+<!-- it's a template file, 
+use to avoid repition task also to embed 
+or write javascript code if it is not possible to write on server page -->
+
+ <%- include('header'); -%>  <!-- including external file(which consist common layout -->
+ <header>
+
+    <h1> <%=keyHead%> </h1>
+
+</header>
+
+<main>
+    <section class="box">
+      
+    <% for(var i=0; i<listTitle.length; i++) { %>
+        <fieldset class="item">
+            <input type="checkbox">
+            <p><%=listTitle[i]%> </p>
+        </fieldset>
+    <% }%>
+
+    </section>
+
+<section >
+
+<form   action="/" method="post">
+
+    <fieldset class="item" >
+        <input   type="text" name="newItem" placeholder="Type your task" autocomplete="off">
+        <button type="submit" name="list" value = <%=keyHead%> >+</button>
+    </fieldset>
+
+</form>
+</section>
+
+</main>
+
+<%- include('footer'); -%>
+
