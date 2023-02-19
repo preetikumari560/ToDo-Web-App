@@ -3,21 +3,23 @@ use to avoid repition task also to embed
 or write javascript code if it is not possible to write on server page -->
 
  <%- include('header'); -%>  <!-- including external file(which consist common layout -->
- <header>
 
-    <h1> <%=keyHead%> </h1>
-
-</header>
-
+ <h1> <%=keyHead%> </h1>
 <main>
+    
     <section class="box">
-      
-    <% for(var i=0; i<listTitle.length; i++) { %>
-        <fieldset class="item">
-            <input type="checkbox">
-            <p><%=listTitle[i]%> </p>
-        </fieldset>
-    <% }%>
+   
+    <% listTitle.forEach((element)=>
+       { %> 
+            <form action="/delete" method="post">
+                    <fieldset class="item">
+                        <input type="checkbox" name="checkBox" value="<%=element._id%>" onchange="this.form.submit()">
+                        <p><%=element.name%> </p>
+                    <input type="hidden" name="listName" value = "<%=keyHead%>"></input>
+                    </fieldset>
+            </form>
+     <%   }
+        ) %>
 
     </section>
 
@@ -26,8 +28,8 @@ or write javascript code if it is not possible to write on server page -->
 <form   action="/" method="post">
 
     <fieldset class="item" >
-        <input   type="text" name="newItem" placeholder="Type your task" autocomplete="off">
-        <button type="submit" name="list" value = <%=keyHead%> >+</button>
+        <input   type="text" name="itemNew" placeholder="Type your task" autocomplete="off">
+        <button type="submit" name="list" value = "<%=keyHead%>" >+</button>
     </fieldset>
 
 </form>
