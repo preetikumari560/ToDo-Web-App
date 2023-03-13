@@ -1,3 +1,5 @@
+require('dotenv').config()   // for .env file
+
 const express = require('express')
 
 const bodyParser = require('body-parser')
@@ -17,11 +19,15 @@ app.use(express.static("public"))
 
 //requiring mongoose 
 const mongoose = require("mongoose")
+mongoose.set('strictQuery', false)
 
 //create new database inside mongodb
 //  mongoose.connect('mongodb://127.0.0.1:27017/todoDb');  (it's a local)
 
-mongoose.connect('mongodb+srv://preeti650goswami:lrlN7iYKdZtEJq1F@cluster0.t5chnp0.mongodb.net/todoDb');
+const url=`mongodb+srv://${process.env.CLIENT_ID}/todoDb`
+
+mongoose.connect(url);
+
 
 // collection schema
  const itemSchema =   {
@@ -222,7 +228,7 @@ app.get("/about",(req,res)=>{
 
 
 app.listen("3000", () => {
-    console.log("server is running at port 4000")
+    console.log("server is running at port 3000")
 })
 
 // console.log(dateMonthYear.getsDay())
