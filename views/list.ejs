@@ -14,7 +14,9 @@ or write javascript code if it is not possible to write on server page -->
             <form action="/delete" method="post">
                     <fieldset class="item">
                         <input type="checkbox" name="checkBox" value="<%=element._id%>" onchange="this.form.submit()">
-                        <p><%=element.name%> </p>
+                      
+                       <p><%=element.name%> </p>
+                 
                     <input type="hidden" name="listName" value = "<%=keyHead%>"></input>
                     </fieldset>
             </form>

@@ -99,12 +99,26 @@ app.get("/", (req, res) => {
 app.post("/", (req, res)=> {
 
     const list_Name = req.body.list
-    const item_Name = req.body.itemNew 
+    const item_Name = req.body.itemNew
     // console.log(req.body)
     console.log( item_Name)
     console.log( list_Name)
     console.log( date)
 
+    if (!item_Name) {
+        // If item_Name is empty, redirect it to homepage
+        if(list_Name=== date){
+        res.redirect('/')
+    
+        }
+            // If item_Name is empty, redirect it to custom_list page
+        else{
+            res.redirect('/'+list_Name)
+        }
+        
+      }
+
+    else{
 
     const item_new = new Item(
         {
@@ -127,6 +141,7 @@ app.post("/", (req, res)=> {
          res.redirect("/"+list_Name)
         })
         }
+    }
 })
 
 //////////////////////////////////////////////////////////////////
