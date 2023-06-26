@@ -64,164 +64,276 @@ const date= dateMonthYear.getsDate()
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // when user try to access home route i.e,"/", "hello" will  print
-app.get("/", (req, res) => {
+// app.get("/", (req, res) => {
 
-    // res.send("hello")
+//     // res.send("hello")
     
 
-    Item.find({},(err,foundItems)=>{
-        // console.log(foundItems)
-        if(foundItems.length===0)
-        {
-           Item.insertMany(defaultItems,(err)=>{
+//     Item.find({},(err,foundItems)=>{
+//         // console.log(foundItems)
+//         if(foundItems.length===0)
+//         {
+//            Item.insertMany(defaultItems,(err)=>{
             
-            if(err)
-                {
-                    console.log(err)
-                }
-            else{
-                // console.log("successfully added")
-            }
-    })
-            res.redirect("/")
-        }
-        else{
+//             if(err)
+//                 {
+//                     console.log(err)
+//                 }
+//             else{
+//                 // console.log("successfully added")
+//             }
+//     })
+//             res.redirect("/")
+//         }
+//         else{
      
-            res.render("list", { keyHead: date, listTitle: foundItems })
+//             res.render("list", { keyHead: date, listTitle: foundItems })
                
-        }
+//         }
 
-})
+// })
     
-})
+// })
+app.get("/", async (req, res) => {
+  try {
+    const foundItems = await Item.find({});
+    
+    if (foundItems.length === 0) {
+      await Item.insertMany(defaultItems);
+      res.redirect("/");
+    } else {
+      res.render("list", { keyHead: date, listTitle: foundItems });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
-app.post("/", (req, res)=> {
+// app.post("/", (req, res)=> {
 
-    const list_Name = req.body.list
-    const item_Name = req.body.itemNew
-    // console.log(req.body)
-    console.log( item_Name)
-    console.log( list_Name)
-    console.log( date)
+//     const list_Name = req.body.list
+//     const item_Name = req.body.itemNew
+//     // console.log(req.body)
+//     console.log( item_Name)
+//     console.log( list_Name)
+//     console.log( date)
 
-    if (!item_Name) {
-        // If item_Name is empty, redirect it to homepage
-        if(list_Name=== date){
-        res.redirect('/')
+//     if (!item_Name) {
+//         // If item_Name is empty, redirect it to homepage
+//         if(list_Name=== date){
+//         res.redirect('/')
     
-        }
-            // If item_Name is empty, redirect it to custom_list page
-        else{
-            res.redirect('/'+list_Name)
-        }
+//         }
+//             // If item_Name is empty, redirect it to custom_list page
+//         else{
+//             res.redirect('/'+list_Name)
+//         }
         
-      }
+//       }
 
-    else{
+//     else{
 
-    const item_new = new Item(
-        {
-            name: item_Name
-        }
-    )
+//     const item_new = new Item(
+//         {
+//             name: item_Name
+//         }
+//     )
 
-    if( list_Name=== date)
-    {
+//     if( list_Name=== date)
+//     {
 
-            item_new.save()
-            res.redirect("/")
+//             item_new.save()
+//             res.redirect("/")
 
+//     }
+//     else{
+//         List.findOne({name:list_Name},(err, foundList)=>{
+//          console.log(foundList)
+//          foundList.item.push(item_new)
+//          foundList.save()
+//          res.redirect("/"+list_Name)
+//         })
+//         }
+//     }
+// })
+app.post("/", (req, res) => {
+  const list_Name = req.body.list;
+  const item_Name = req.body.itemNew;
+
+  console.log(item_Name);
+  console.log(list_Name);
+  console.log(date);
+
+  if (!item_Name) {
+    if (list_Name === date) {
+      res.redirect("/");
+    } else {
+      res.redirect("/" + list_Name);
     }
-    else{
-        List.findOne({name:list_Name},(err, foundList)=>{
-         console.log(foundList)
-         foundList.item.push(item_new)
-         foundList.save()
-         res.redirect("/"+list_Name)
+  } else {
+    const item_new = new Item({
+      name: item_Name,
+    });
+
+    if (list_Name === date) {
+      item_new
+        .save()
+        .then(() => {
+          res.redirect("/");
         })
-        }
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      List.findOne({ name: list_Name })
+        .then((foundList) => {
+          console.log(foundList);
+          foundList.item.push(item_new);
+          return foundList.save();
+        })
+        .then(() => {
+          res.redirect("/" + list_Name);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-})
+  }
+});
 
 //////////////////////////////////////////////////////////////////
 
-app.post("/delete",(req,res)=>
-{
-    const listHeading =req.body.listName
-    const checkItemId = req.body.checkBox
+// app.post("/delete",(req,res)=>
+// {
+//     const listHeading =req.body.listName
+//     const checkItemId = req.body.checkBox
     
-    if(listHeading===date)
-        {        
-        // or   Item.deleteOne({_id:checkItemId},(err)=>
-        Item.findByIdAndRemove(checkItemId,(err)=>  
-            { 
-                if(!err)
-                {
-                    console.log("item deleted successfully")
-                    res.redirect("/")
-                }
-                else
-                {
-                    console.log(err)  
-                } 
-            }) 
-        }
-        else
-        {
-        List.findOneAndUpdate({name:listHeading},{$pull:{item:{_id:checkItemId}}},(err,foundOne)=>{
-                if(!err)
-                    {
-                        res.redirect("/"+listHeading)
-                    }
-                else
-                    {
-                        console.log(err)
-                    }
-            })
-        }
+//     if(listHeading===date)
+//         {        
+//         // or   Item.deleteOne({_id:checkItemId},(err)=>
+//         Item.findByIdAndRemove(checkItemId,(err)=>  
+//             { 
+//                 if(!err)
+//                 {
+//                     console.log("item deleted successfully")
+//                     res.redirect("/")
+//                 }
+//                 else
+//                 {
+//                     console.log(err)  
+//                 } 
+//             }) 
+//         }
+//         else
+//         {
+//         List.findOneAndUpdate({name:listHeading},{$pull:{item:{_id:checkItemId}}},(err,foundOne)=>{
+//                 if(!err)
+//                     {
+//                         res.redirect("/"+listHeading)
+//                     }
+//                 else
+//                     {
+//                         console.log(err)
+//                     }
+//             })
+//         }
 
-})
+// })
+
+app.post("/delete", (req, res) => {
+  const listHeading = req.body.listName;
+  const checkItemId = req.body.checkBox;
+
+  if (listHeading === date) {
+    Item.findByIdAndRemove(checkItemId)
+      .then(() => {
+        console.log("item deleted successfully");
+        res.redirect("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    List.findOneAndUpdate({ name: listHeading }, { $pull: { item: { _id: checkItemId } } })
+      .then(() => {
+        res.redirect("/" + listHeading);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+});
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 // localhost:3000/work ,another template page by sharing same html and css just render value get changed
 
 
-app.get("/:customListName",(req,res)=>{
+// app.get("/:customListName",(req,res)=>{
 
-    const requesTitle =  _.capitalize(req.params.customListName)
+//     const requesTitle =  _.capitalize(req.params.customListName)
 
 
-    List.findOne({name:requesTitle},(err,foundList)=>
-    {
-        if(!err)
-        {
-             if(!foundList)
-            {
+//     List.findOne({name:requesTitle},(err,foundList)=>
+//     {
+//         if(!err)
+//         {
+//              if(!foundList)
+//             {
 
-                //create a new list :
-                const listItem =new List ({
-                    name: requesTitle,
-                    item:defaultItems
-             })
+//                 //create a new list :
+//                 const listItem =new List ({
+//                     name: requesTitle,
+//                     item:defaultItems
+//              })
 
-                listItem.save();
-                res.redirect("/"+requesTitle)
+//                 listItem.save();
+//                 res.redirect("/"+requesTitle)
 
-            }
-            else{
-                // console.log(foundList) 
+//             }
+//             else{
+//                 // console.log(foundList) 
 
-                res.render("list", { keyHead: foundList.name, listTitle: foundList.item })
-            }
-        }
+//                 res.render("list", { keyHead: foundList.name, listTitle: foundList.item })
+//             }
+//         }
     
-    }
+//     }
     
-    )
+//     )
 
 
-})
+// })
+
+
+app.get("/:customListName", (req, res) => {
+  const requestTitle = _.capitalize(req.params.customListName);
+
+  List.findOne({ name: requestTitle })
+    .then((foundList) => {
+      if (!foundList) {
+        // Create a new list
+        const listItem = new List({
+          name: requestTitle,
+          item: defaultItems,
+        });
+
+        return listItem.save();
+      } else {
+        return foundList;
+      }
+    })
+    .then((list) => {
+      res.render("list", { keyHead: list.name, listTitle: list.item });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 
 //////////////////////////////////////////////////////////
