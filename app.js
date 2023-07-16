@@ -22,11 +22,11 @@ const mongoose = require("mongoose")
 mongoose.set('strictQuery', false)
 
 //create new database inside mongodb
- mongoose.connect('mongodb://127.0.0.1:27017/todoDb');  //(it's a local)
+//  mongoose.connect('mongodb://127.0.0.1:27017/todoDb');  //(it's a local)
 
-// const url=`mongodb+srv://${process.env.CLIENT_ID}/todoDb`
+const url=`mongodb+srv://${process.env.CLIENT_ID}/todoDb`
 
-// mongoose.connect(url);
+mongoose.connect(url);
 
 
 // collection schema
