@@ -22,11 +22,11 @@ const mongoose = require("mongoose")
 mongoose.set('strictQuery', false)
 
 //create new database inside mongodb
-//  mongoose.connect('mongodb://127.0.0.1:27017/todoDb');  //(it's a local)
+ mongoose.connect('mongodb://127.0.0.1:27017/todoDb');  //(it's a local)
 
-const url=`mongodb+srv://${process.env.CLIENT_ID}/todoDb`
+// const url=`mongodb+srv://${process.env.CLIENT_ID}/todoDb`
 
-mongoose.connect(url);
+// mongoose.connect(url);
 
 
 // collection schema
@@ -63,9 +63,9 @@ const date= dateMonthYear.getsDate()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
-// when user try to access home route i.e,"/", "hello" will  print
-app.get("/", (req, res) => {
 
+app.get("/", (req, res) => {
+// when user try to access home route i.e,"/", "hello" will  print
     // res.send("hello")
     
 
@@ -112,53 +112,47 @@ app.get("/", (req, res) => {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-app.post("/", (req, res)=> {
+app.post("/", (req, res) => {
+  const list_Name = req.body.list;
+  const item_Name = req.body.itemNew;
 
-    const list_Name = req.body.list
-    const item_Name = req.body.itemNew
-    // console.log(req.body)
-    console.log( item_Name)
-    console.log( list_Name)
-    console.log( date)
-
-    if (!item_Name) {
-        // If item_Name is empty, redirect it to homepage
-        if(list_Name=== date){
-        res.redirect('/')
-    
-        }
-            // If item_Name is empty, redirect it to custom_list page
-        else{
-            res.redirect('/'+list_Name)
-        }
-        
-      }
-
-    else{
-
-    const item_new = new Item(
-        {
-            name: item_Name
-        }
-    )
-
-    if( list_Name=== date)
-    {
-
-            item_new.save()
-            res.redirect("/")
-
+  if (!item_Name) {
+    if (list_Name === date) {
+      res.redirect("/");
+    } else {
+      res.redirect("/" + list_Name);
     }
-    else{
-        List.findOne({name:list_Name},(err, foundList)=>{
-         console.log(foundList)
-         foundList.item.push(item_new)
-         foundList.save()
-         res.redirect("/"+list_Name)
-        })
+  } else {
+    const item_new = new Item({
+      name: item_Name,
+    });
+
+    if (list_Name === date) {
+      item_new.save().then(() => {
+        // Find all items in the database
+        Item.find({}, (err, foundItems) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.render("list", { keyHead: date, listTitle: foundItems });
+          }
+        });
+      });
+    } else {
+      List.findOne({ name: list_Name }, (err, foundList) => {
+        if (!err) {
+          foundList.item.push(item_new);
+          foundList.save().then(() => {
+            res.redirect("/" + list_Name);
+          });
+        } else {
+          console.log(err);
         }
+      });
     }
-})
+  }
+});
+
 // app.post("/", (req, res) => {
 //   const list_Name = req.body.list;
 //   const item_Name = req.body.itemNew;
@@ -205,43 +199,34 @@ app.post("/", (req, res)=> {
 // });
 
 //////////////////////////////////////////////////////////////////
+app.post("/delete", (req, res) => {
+    const listHeading = req.body.listName;
+    const checkItemId = req.body.checkBox;
 
-app.post("/delete",(req,res)=>
-{
-    const listHeading =req.body.listName
-    const checkItemId = req.body.checkBox
-    
-    if(listHeading===date)
-        {        
-        // or   Item.deleteOne({_id:checkItemId},(err)=>
-        Item.findByIdAndRemove(checkItemId,(err)=>  
-            { 
-                if(!err)
-                {
-                    console.log("item deleted successfully")
-                    res.redirect("/")
+    if (listHeading === date) {
+        Item.findByIdAndRemove(checkItemId, (err) => {
+            if (!err) {
+                console.log("Item deleted successfully");
+                res.redirect("/");
+            } else {
+                console.log(err);
+            }
+        });
+    } else {
+        List.findOneAndUpdate(
+            { name: listHeading },
+            { $pull: { item: { _id: checkItemId } } },
+            (err, foundList) => {
+                if (!err) {
+                    res.redirect("/" + listHeading);
+                } else {
+                    console.log(err);
                 }
-                else
-                {
-                    console.log(err)  
-                } 
-            }) 
-        }
-        else
-        {
-        List.findOneAndUpdate({name:listHeading},{$pull:{item:{_id:checkItemId}}},(err,foundOne)=>{
-                if(!err)
-                    {
-                        res.redirect("/"+listHeading)
-                    }
-                else
-                    {
-                        console.log(err)
-                    }
-            })
-        }
+            }
+        );
+    }
+});
 
-})
 
 // app.post("/delete", (req, res) => {
 //   const listHeading = req.body.listName;

@@ -4,19 +4,21 @@ or write javascript code if it is not possible to write on server page -->
 
  <%- include('header'); -%>  <!-- including external file(which consist common layout -->
 
- <h1> <%=keyHead%> </h1>
+
 <main>
-    
+     <h1> <%=keyHead%> </h1>
     <section class="box">
    
     <% listTitle.forEach((element)=>
        { %> 
             <form action="/delete" method="post">
                     <fieldset class="item">
-                        <input type="checkbox" name="checkBox" value="<%=element._id%>" onchange="this.form.submit()">
-                      
-                       <p><%=element.name%> </p>
-                 
+                    <label for="<%= element._id %>">
+                        <input type="checkbox" name="checkBox" value="<%=element._id%>" id="<%= element._id %>" onchange="this.form.submit() "><i class="bi bi-trash"></i>
+                    
+                      </label>
+                       <p><%=element.name%> </p> 
+                    
                     <input type="hidden" name="listName" value = "<%=keyHead%>"></input>
                     </fieldset>
             </form>

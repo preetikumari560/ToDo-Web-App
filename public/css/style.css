@@ -1,47 +1,81 @@
-html {
-    background-color: #E4E9FD;
-    background-image: linear-gradient(-20deg, #C4B0FF 46%, #E4E9FD 28%);
-    min-height: 100vh;
-    font-family: 'helvetica neue'; 
-    
-    background-attachment: fixed;
-  }
 
-  body{
-    display: flex;
-    flex-direction: column;
-    min-width: 480px;
 
-  }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,body {
+width: 100%;
+min-height: 100%;
+  font-family: 'helvetica neue'; 
+  background-color: black;
+
+   background-image: url("https://i.fbcd.co/products/original/a8f4c06355b99ba5ab8a0cf75fd0077c2fc831fb8ec4bd98749e2fe37ecf840f.jpg");
+
+  background-size: 100% 100%;   /*to fit background-image: ; */
+
+  background-attachment: fixed;
+  background-position: center;
+}
+
 
   nav{
-        display: grid;
-        grid-template-columns: 20% 80% ;
-        justify-content: flex-start;
+        display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+
     }
  
-  nav a{
-    margin: 25px;
-    margin-left: 50px;
-    padding: 10px;
-    padding-top: 8px;
-    height: 30px;
-    width: 30px;
-    border-radius: 100%;
-    border-color: transparent;
-    background-color: #A683E3;
+nav a {
+    height: 55px;
+    width: 60px;
+    border-radius: 50%;
+    background-image: linear-gradient(to right top, #4c0654, #6f0c72, #961191, #bf14af, #eb12cd);
     color: #fff;
-    font-size: 30px;
+    padding-left: 20px;
+ 
+    padding-bottom: 5px;
     border-width: 0;
-    font-weight: 200;
+    font-size: 2rem;
+
+    margin: 50px 80px;
     text-decoration: none;
+    cursor: pointer;
+}
+  
+
+  nav form{
+    position: relative;
+    margin: 50px ;
+    text-align: center;
+  right:50px;
+margin-bottom: 30px;
+  }
+
+  nav button
+  {
+
+  height: auto;
+    width: 55px;
+    border-radius: 50%;
+   background-image: linear-gradient(to right top, #4c0654, #6f0c72, #961191, #bf14af, #eb12cd);
+    color: #fff;
+    padding-left: 17px;
+    font-size: 2rem;
+    padding-bottom: 6px;
+    border-width: 0;
+    cursor: pointer;
+    text-decoration: none;
+
 
   }
 
-  nav form{
-    grid-column: 2;
-    margin: 20px;
-    text-align: center;
+  nav input
+  {
+
+color: black;
   }
   a:hover
   {
@@ -51,49 +85,69 @@ html {
   h1 {
     color: #fff;
     padding: 10px;
-    width:22.9375rem;
-    margin: 30px auto;
-    background-color: #A683E3;
+    width:100%;
+
+background-image: linear-gradient(to left top, #59087f, #7c50a4, #a28ac6, #cdc4e4, #ffffff);
     text-align: center;
-    justify-items: center;
+  margin-bottom: 30px;
   }
   
   main {
-    max-width: 400px;
-    margin: 30px auto;
-    background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+    width: 30%;
+    margin: 0px auto;
+    /* background: white; */
     border-radius: 5px;
     box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+    margin-bottom: 100px;
   }
  
+
   .item {
-    min-height: 70px;
+   
     display: flex;
+    flex-direction: row;
+     max-height: 70px;
+    justify-content: center;
     align-items: center;
     border: none;
     border-top:1px solid #F1F1F1;
-  
+  background-color: white;
   }
   
   .item:last-child {
     border-bottom: 0;
   }
   
-  input:checked+p {
+label
+{
+display: flex;
+flex-direction: row;
+}
+
+  input[type="checkbox"] {
+    appearance: none;
+   
+  }
+  
+/* label input:checked ~ p
+{
     text-decoration: line-through;
     text-decoration-color: #A683E3;
-  }
-  
-  input[type="checkbox"] {
-    margin: 20px;
-    accent-color: #A683E3;
-  }
-  
+} */
+
   p {
-    margin: 0;
-    padding: 20px;
-    font-size: 20px;
+  
+     position: relative;
+    margin: 0 auto;
+    padding: 20px 0;
+    font-size: 1.5rem;
     font-weight: 200;
+    justify-self: center;
+  right: 15px;
     color: #00204a;
   }
   
@@ -103,16 +157,17 @@ html {
   }
   
   button {
-    min-height: 50px;
+    height: 50px;
     width: 50px;
     border-radius: 50%;
     border-color: transparent;
-    background-color: #A683E3;
+    background-image: linear-gradient(to right top, #4c0654, #6f0c72, #961191, #bf14af, #eb12cd);
     color: #fff;
     font-size: 30px;
     padding-bottom: 6px;
     border-width: 0;
     cursor: pointer;
+    margin-left: 10px;
   }
   button:hover
   {
@@ -121,46 +176,187 @@ html {
  
   
   input[type="text"] {
+  width: 70%;
     text-align: center;
-    height: 60px;
-    top: 10px;
+    height: 70px;
+   
     border: none;
     background: transparent;
-    font-size: 20px;
+    font-size: 1.6rem;
     font-weight: 200;
-     width:rem;
 
     margin-bottom: 20px;
+        box-shadow: inset 0 -3px 0 0 #6f0c72;
+      
   }
   
   input[type="text"]:focus {
     outline: none;
-    box-shadow: inset 0 -3px 0 0 #A683E3;
+
   }
   
   ::placeholder {
-    color: grey;
+    color: rgb(99, 97, 97);
     opacity: 1;
   }
   
-@media(max-width:486px)
+
+  
+  .bi-trash
+  {
+  position: relative;
+font-size: 1.5rem;
+margin: 20px;
+left: 20px;
+
+    color:purple;
+  }
+
+
+ @media screen and (max-width: 1200px)
+
+ {
+ 
+    main{
+
+    width: 40%;
+    }
+
+    p
+    {
+        right: 0;
+    }
+  }
+
+  @media screen and (max-width: 768px)
+{
+main
+{
+width: 55%;
+
+}
+
+nav a{
+margin-left: 40px;
+}
+input[type="text"] {
+font-size: 1.3rem;
+}
+
+p
+{
+font-size: 1.3rem;
+}
+  }
+
+
+/* @media screen and (max-width:720px) 
 
 {
-  nav{
-        display: grid;
-        grid-template-columns: auto auto auto ;
-        /* justify-content: flex-start; */
-    }
-  input[type="text"] {
-  
-    width: 100%;
-    margin:auto 20px 10px 20px;
-  
-  }
 
-  h1
+} */
+  @media screen and (max-width:586px) 
+
   {
-       width:22.9375rem;
-     
+    nav input::placeholder {
+    color: whitesmoke;
+    opacity: 1;
   }
+  html,body {
+
+   background-image: url("https://i.pinimg.com/originals/df/6e/8d/df6e8d2fe3957652c6f1541f664785c0.jpg");
+
+}
+
+input[type="text"] {
+font-size: 1.2rem;
+width: 65%;
+}
+
+main
+
+{
+width: 65%;
+}
+
+nav input[type="text"]
+
+{
+width: 100%;
+}
+
+p
+{
+right: 10px;
+
+}
+  }
+@media screen and (max-width:468px)
+{
+
+nav input[type="text"]
+
+{
+
+font-size: 1.1rem;
+
+
+}
+
+nav form
+{
+margin-right: 0;
+}
+
+nav a
+
+{
+    height: 50px;
+    width: 52px;
+margin: 35px 40px;
+font-size: 1.6rem;
+}
+nav button {
+position: relative;
+left: 45px;
+    height: 52px;
+    width: 51px;
+    font-size: 1.6rem;
+
+
+}
+
+main
+{
+width: 80%;
+}
+p
+{
+font-size: 1.1rem;
+
+}
+}
+
+@media screen and (max-width:355px)
+{
+nav form
+{
+width: 100%;
+}
+nav input[type="text"] {
+    font-size: 1rem;
+    right: 10;
+    position: relative;
+    right: 20px;
+    margin-top: 20px;
+  
+}
+nav button
+{
+left:0;
+}
+.bi-trash
+{
+left: 0;
+}
 }
